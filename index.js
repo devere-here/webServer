@@ -1,12 +1,14 @@
 const http = require('http')
 const fs = require('fs')
-const port = 4000
+const path = require('path')
+const argv = require('yargs').argv
+const port = argv.port || 4000
 
 const server = http.createServer((req, res) => {
   let statusCode
   let data
-  
-  fs.readFile('index.html', (err, page) => {
+
+  fs.readFile(path.join(__dirname, req.url), (err, page) => {
     if (err) {
       statusCode = 404
       data = 'something went wrong please try again'
@@ -23,6 +25,6 @@ const server = http.createServer((req, res) => {
   })
 })
 
-server.listen(4000, () => {
+server.listen(port, () => {
   console.log(`server is listening on port ${port}`)
 })
